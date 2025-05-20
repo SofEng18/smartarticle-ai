@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الأسعار - SmartArticle AI</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: linear-gradient(to bottom left, #f0f4f8, #cbd5e1);
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body class="text-gray-800 flex flex-col justify-between">
+
+  <header class="bg-white shadow-md py-4">
+    <div class="container mx-auto flex justify-between items-center px-4">
+      <h1 class="text-2xl font-bold text-blue-700">🧠 SmartArticle AI</h1>
+      <nav>
+        <a href="index.html" class="text-blue-500 hover:text-blue-700 mx-2">الرئيسية</a>
+        <select id="language" class="border rounded p-1">
+          <option value="ar" selected>العربية</option>
+          <option value="en">English</option>
+          <option value="fr">Français</option>
+        </select>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container mx-auto px-4 py-12 flex-grow">
+    <h2 id="plansTitle" class="text-3xl font-bold text-center text-blue-800 mb-10">💳 خطط الاشتراك</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <!-- Free Plan -->
+      <div class="bg-white p-6 rounded-2xl shadow-md flex flex-col items-center justify-between">
+        <h3 class="text-xl font-bold mb-2" id="freeTitle">الخطة المجانية</h3>
+        <p class="text-gray-500 mb-4" id="freeDesc">مقال واحد في اليوم</p>
+        <p class="text-blue-600 font-bold text-2xl mb-4">مجانية</p>
+        <button class="mt-auto bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-xl transition duration-300">
+          🚀 ابدأ الآن مجانًا
+        </button>
+      </div>
+
+      <!-- Monthly Plan -->
+      <div class="bg-white p-6 rounded-2xl shadow-lg border-2 border-blue-600 flex flex-col items-center justify-between">
+        <h3 class="text-xl font-bold mb-2" id="monthlyTitle">الخطة الشهرية</h3>
+        <p class="text-gray-500 mb-4" id="monthlyDesc">مقالات غير محدودة + دعم كامل</p>
+        <p class="text-blue-600 font-bold text-2xl mb-4">$3.99 / شهر</p>
+        <button
+          id="monthlyBtn"
+          class="mt-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-xl transition duration-300"
+          onclick="window.open('https://buy.stripe.com/test_bJe00l93083qgYh9DB43S00', '_blank')"
+        >
+          💳 اشترك الآن
+        </button>
+      </div>
+
+      <!-- Yearly Plan -->
+      <div class="bg-white p-6 rounded-2xl shadow-md flex flex-col items-center justify-between">
+        <h3 class="text-xl font-bold mb-2" id="yearlyTitle">الخطة السنوية</h3>
+        <p class="text-gray-500 mb-4" id="yearlyDesc">أفضل قيمة: خصم 20%</p>
+        <p class="text-blue-600 font-bold text-2xl mb-4">$39.99 / سنة</p>
+        <button
+          id="yearlyBtn"
+          class="mt-auto bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-xl transition duration-300"
+          onclick="window.open('https://buy.stripe.com/test_28EeVfdjgfvScI1g1Z43S01', '_blank')"
+        >
+          🏆 اشترك سنويًا
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-white shadow-inner py-4 mt-6">
+    <div class="container mx-auto text-center text-sm text-gray-500">
+      &copy; 2025 <span class="text-blue-600 font-semibold">نديم الصلوي - SmartArticle AI</span>
+    </div>
+  </footer>
+
+  <script>
+    const languageSelector = document.getElementById("language");
+    const plansTitle = document.getElementById("plansTitle");
+
+    languageSelector.addEventListener("change", function () {
+      const lang = this.value;
+
+      // Change page direction
+      if (lang === "ar") {
+        document.documentElement.lang = "ar";
+        document.documentElement.dir = "rtl";
+      } else {
+        document.documentElement.lang = lang;
+        document.documentElement.dir = "ltr";
+      }
+
+      // Translate titles and descriptions
+      if (lang === "en") {
+        plansTitle.textContent = "💳 Subscription Plans";
+        document.getElementById("freeTitle").textContent = "Free Plan";
+        document.getElementById("freeDesc").textContent = "1 article per day";
+        document.getElementById("monthlyTitle").textContent = "Monthly Plan";
+        document.getElementById("monthlyDesc").textContent = "Unlimited articles + full support";
+        document.getElementById("yearlyTitle").textContent = "Yearly Plan";
+        document.getElementById("yearlyDesc").textContent = "Best value: 20% discount";
+      } else if (lang === "fr") {
+        plansTitle.textContent = "💳 Plans d'abonnement";
+        document.getElementById("freeTitle").textContent = "Plan Gratuit";
+        document.getElementById("freeDesc").textContent = "1 article par jour";
+        document.getElementById("monthlyTitle").textContent = "Plan Mensuel";
+        document.getElementById("monthlyDesc").textContent = "Articles illimités + support complet";
+        document.getElementById("yearlyTitle").textContent = "Plan Annuel";
+        document.getElementById("yearlyDesc").textContent = "Meilleure offre: 20% de réduction";
+      } else {
+        plansTitle.textContent = "💳 خطط الاشتراك";
+        document.getElementById("freeTitle").textContent = "الخطة المجانية";
+        document.getElementById("freeDesc").textContent = "مقال واحد في اليوم";
+        document.getElementById("monthlyTitle").textContent = "الخطة الشهرية";
+        document.getElementById("monthlyDesc").textContent = "مقالات غير محدودة + دعم كامل";
+        document.getElementById("yearlyTitle").textContent = "الخطة السنوية";
+        document.getElementById("yearlyDesc").textContent = "أفضل قيمة: خصم 20%";
+      }
+    });
+  </script>
+</body>
+</html>
