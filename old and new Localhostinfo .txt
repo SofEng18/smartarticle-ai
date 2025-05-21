@@ -1,0 +1,35 @@
+localhost: 3002
+path: cd C:\Users\prona\Desktop\SmartArticle-AI
+node sever.js
+
+New loacalhost :
+cd D:\Websites_Projects\SmartArticle-AI
+node sever.js
+
+
+
+
+
+-------------------------------------------
+cd D:\Websites_Projects\SmartArticle-AI
+from a C:\ prompt, it doesn't switch drives automatically — it just changes the working directory in memory (which is confusing).
+
+To properly switch to the D: drive and then go to your project:
+In Command Prompt, do this in two steps:
+
+
+D:
+cd Websites_Projects\SmartArticle-AI
+Or do it in one line inside CMD:
+
+D:\Websites_Projects\SmartArticle-AI
+Then run your server:
+
+node server.js
+
+SmartArticle AI backend running on http://localhost:3002
+
+
+or 
+npm install -g nodemon     to install express
+nodemon server.js
