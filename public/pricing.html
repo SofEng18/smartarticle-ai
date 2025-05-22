@@ -38,7 +38,7 @@
       <div class="bg-white p-6 rounded-2xl shadow-md flex flex-col items-center justify-between">
         <h3 class="text-xl font-bold mb-2" id="freeTitle">الخطة المجانية</h3>
         <p class="text-gray-500 mb-4" id="freeDesc">مقال واحد في اليوم</p>
-        <p class="text-blue-600 font-bold text-2xl mb-4">مجانية</p>
+        <p class="text-blue-600 font-bold text-2xl mb-4" id="freePrice">مجانية</p>
         <button class="mt-auto bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-xl transition duration-300">
           🚀 ابدأ الآن مجانًا
         </button>
@@ -48,7 +48,7 @@
       <div class="bg-white p-6 rounded-2xl shadow-lg border-2 border-blue-600 flex flex-col items-center justify-between">
         <h3 class="text-xl font-bold mb-2" id="monthlyTitle">الخطة الشهرية</h3>
         <p class="text-gray-500 mb-4" id="monthlyDesc">مقالات غير محدودة + دعم كامل</p>
-        <p class="text-blue-600 font-bold text-2xl mb-4">$3.99 / شهر</p>
+        <p class="text-blue-600 font-bold text-2xl mb-4" id="monthlyPrice">$3.99 / شهر</p>
         <button
           id="monthlyBtn"
           class="mt-auto bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-xl transition duration-300"
@@ -62,7 +62,7 @@
       <div class="bg-white p-6 rounded-2xl shadow-md flex flex-col items-center justify-between">
         <h3 class="text-xl font-bold mb-2" id="yearlyTitle">الخطة السنوية</h3>
         <p class="text-gray-500 mb-4" id="yearlyDesc">أفضل قيمة: خصم 20%</p>
-        <p class="text-blue-600 font-bold text-2xl mb-4">$39.99 / سنة</p>
+        <p class="text-blue-600 font-bold text-2xl mb-4" id="yearlyPrice">$24.99 / سنة</p>
         <button
           id="yearlyBtn"
           class="mt-auto bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-xl transition duration-300"
@@ -101,26 +101,35 @@
         plansTitle.textContent = "💳 Subscription Plans";
         document.getElementById("freeTitle").textContent = "Free Plan";
         document.getElementById("freeDesc").textContent = "1 article per day";
+        document.getElementById("freePrice").textContent = "Free";
         document.getElementById("monthlyTitle").textContent = "Monthly Plan";
         document.getElementById("monthlyDesc").textContent = "Unlimited articles + full support";
+        document.getElementById("monthlyPrice").textContent = "$3.99 / month";
         document.getElementById("yearlyTitle").textContent = "Yearly Plan";
         document.getElementById("yearlyDesc").textContent = "Best value: 20% discount";
+        document.getElementById("yearlyPrice").textContent = "$24.99 / year";
       } else if (lang === "fr") {
         plansTitle.textContent = "💳 Plans d'abonnement";
         document.getElementById("freeTitle").textContent = "Plan Gratuit";
         document.getElementById("freeDesc").textContent = "1 article par jour";
+        document.getElementById("freePrice").textContent = "Gratuit";
         document.getElementById("monthlyTitle").textContent = "Plan Mensuel";
         document.getElementById("monthlyDesc").textContent = "Articles illimités + support complet";
+        document.getElementById("monthlyPrice").textContent = "3,99 $ / mois";
         document.getElementById("yearlyTitle").textContent = "Plan Annuel";
         document.getElementById("yearlyDesc").textContent = "Meilleure offre: 20% de réduction";
+        document.getElementById("yearlyPrice").textContent = "24,99 $ / an";
       } else {
         plansTitle.textContent = "💳 خطط الاشتراك";
         document.getElementById("freeTitle").textContent = "الخطة المجانية";
         document.getElementById("freeDesc").textContent = "مقال واحد في اليوم";
+        document.getElementById("freePrice").textContent = "مجانية";
         document.getElementById("monthlyTitle").textContent = "الخطة الشهرية";
         document.getElementById("monthlyDesc").textContent = "مقالات غير محدودة + دعم كامل";
+        document.getElementById("monthlyPrice").textContent = "$3.99 / شهر";
         document.getElementById("yearlyTitle").textContent = "الخطة السنوية";
         document.getElementById("yearlyDesc").textContent = "أفضل قيمة: خصم 20%";
+        document.getElementById("yearlyPrice").textContent = "$24.99 / سنة";
       }
     });
   </script>

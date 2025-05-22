@@ -1,6 +1,7 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
+import fs from "fs";
 import OpenAI from "openai";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -12,16 +13,62 @@ const port = 3002;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, "public")));
 
+// ✅ Serve appropriate page based on maintenance flag
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  const maintenanceFlagPath = path.join(__dirname, "maintenance.flag");
+  const isMaintenance = fs.existsSync(maintenanceFlagPath);
+
+  if (isMaintenance) {
+    // Send maintenance page if maintenance.flag exists
+    res.sendFile(path.join(__dirname, "public", "maintenance.html"));
+  } else {
+    // Otherwise, send the regular index page
+    res.sendFile(path.join(__dirname, "public", "index.html"));
+  }
 });
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+// ✅ Maintenance messages in different languages
+const maintenanceMessages = {
+  arabic:
+    "الموقع تحت الصيانة حاليًا.\n" +
+    "سنعود قريبًا بإذن الله.\n" +
+    "شكرًا على صبركم وتفهمكم.\n" +
+    "نديم\n",
+
+  english:
+    "The site is currently under maintenance.\n" +
+    "We will be back soon, God willing.\n" +
+    "Thank you for your patience and understanding.\n" +
+    "Nadim\n",
+};
+
 app.post("/generate", async (req, res) => {
-  const { topic, language, length } = req.body;
+  const { topic, language = "english", length } = req.body;
+
+  // ✅ Check for maintenance.flag file
+  const maintenanceFlagPath = path.join(__dirname, "maintenance.flag");
+  const isMaintenance = fs.existsSync(maintenanceFlagPath);
+
+  if (isMaintenance) {
+    res.setHeader("Content-Type", "text/plain; charset=utf-8");
+
+    // Select appropriate language message
+    const message = language.toLowerCase().startsWith("ar")
+      ? maintenanceMessages.arabic
+      : maintenanceMessages.english;
+
+    // Stream message character by character
+    for (const char of message) {
+      res.write(char);
+      await new Promise((resolve) => setTimeout(resolve, 40));
+    }
+
+    return res.end();
+  }
 
   if (!topic) {
     return res.status(400).json({ error: "Topic is required" });
@@ -67,5 +114,5 @@ app.post("/generate", async (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`SmartArticle AI backend running on http://localhost:${port}`);
+  console.log(`✅ SmartArticle AI backend running at http://localhost:${port}`);
 });

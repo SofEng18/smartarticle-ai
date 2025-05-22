@@ -47,7 +47,8 @@
     <div class="container mx-auto flex justify-between items-center px-4">
       <h1 class="text-2xl font-bold text-white">🧠 SmartArticle AI</h1>
       <nav class="flex items-center gap-2">
-        <a href="pricing.html" class="text-white hover:text-yellow-300 mx-2">💰 <span id="pricing-label">الأسعار</span></a>
+        <!-- Changed "الأسعار" to "الاشتراك" -->
+        <a href="pricing.html" class="text-white hover:text-yellow-300 mx-2">💰 <span id="pricing-label">الاشتراك</span></a>
         <label for="language" class="text-sm text-white mr-2 hidden sm:inline" id="lang-label">اللغة:</label>
         <select id="language" class="border rounded p-1 text-sm">
           <option value="ar">العربية</option>
@@ -79,7 +80,7 @@
         📰 المقال سيظهر هنا...
       </div>
 
-      <!-- Social Share Icons -->
+      <!-- Social Share Icons with proper links -->
       <div class="flex justify-center space-x-4 mt-6 text-blue-600 text-xl rtl:space-x-reverse">
         <a href="https://wa.me/?text=Check%20this%20article" title="شارك عبر واتساب" target="_blank"><i class="fab fa-whatsapp"></i></a>
         <a href="https://www.facebook.com/sharer/sharer.php?u=https://smartarticle.example" title="شارك عبر فيسبوك" target="_blank"><i class="fab fa-facebook"></i></a>
@@ -111,7 +112,7 @@
         empty: "يرجى إدخال موضوع المقال",
         inputTitle: "✍️ أدخل موضوع المقال:",
         lengthLabel: "طول المقال:",
-        pricing: "الأسعار",
+        pricing: "الاشتراك",
         button: "🚀 توليد المقال"
       },
       en: {
@@ -121,7 +122,7 @@
         empty: "Please enter an article topic",
         inputTitle: "✍️ Enter the article topic:",
         lengthLabel: "Article length:",
-        pricing: "Pricing",
+        pricing: "Subscribe",
         button: "🚀 Generate Article"
       },
       fr: {
@@ -131,7 +132,7 @@
         empty: "Veuillez entrer un sujet d’article",
         inputTitle: "✍️ Saisissez le sujet de l’article :",
         lengthLabel: "Longueur de l’article :",
-        pricing: "Tarifs",
+        pricing: "S'abonner",
         button: "🚀 Générer l’article"
       }
     };
@@ -187,6 +188,8 @@
       }
 
       try {
+        resultBox.innerHTML = messages[currentLanguage].loading;
+
         const response = await fetch("/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -194,7 +197,7 @@
         });
 
         if (!response.ok || !response.body) {
-          resultBox.innerHTML = `<span class="text-red-600">❌ خطأ في الاتصال بالخادم</span>`;
+          resultBox.innerHTML = '<span class="text-red-600">❌ خطأ في الاتصال بالخادم</span>';
           return;
         }
 
