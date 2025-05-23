@@ -1,279 +1,358 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
+  <!-- ✅ Google Analytics Tag -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CP8WC7JFYH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CP8WC7JFYH');
+  </script>
+
+  <!-- ✅ Google Site Verification -->
+  <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE_HERE" />
+
+  <!-- ✅ Sitemap -->
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>SmartArticle AI</title>
-  <!-- Tailwind CSS for styling -->
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <!-- Google Fonts: Cairo (Arabic friendly font) -->
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
-  <!-- Font Awesome for social icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600&family=Amiri&display=swap" rel="stylesheet" />
+
   <style>
-    /* General body styles with font and background gradient */
+    * { box-sizing: border-box; }
     body {
-      font-family: 'Cairo', sans-serif;
-      background: linear-gradient(to bottom left, #f0f4f8, #cbd5e1);
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
-    /* Styling for the result container where generated article appears */
-    #result {
-      white-space: pre-wrap; /* preserve new lines */
-      word-wrap: break-word; /* allow long words to break */
-      background-color: #f9fafb;
-      border: 1px solid #e5e7eb;
-      padding: 1rem;
-      border-radius: 0.75rem;
-      height: 16rem;
-      overflow-y: auto; /* enable vertical scrollbar when needed */
+    a {
+      color: #ffcc00;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    header {
+      background-color: rgba(0,0,0,0.4);
+      padding: 1rem 2rem;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      user-select: none;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      color: #ffcc00;
       position: relative;
     }
 
-    /* Animated blinking dot to show loading or active status */
-    #result::after {
-      content: "";
+    header a {
+      color: #ffcc00;
+      font-size: 1.4rem;
+      margin-right: 12px;
       position: absolute;
-      right: 1rem;
-      bottom: 1rem;
-      width: 10px;
-      height: 10px;
-      background-color: #3b82f6;
-      border-radius: 50%;
-      animation: blink 1s infinite;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
     }
 
-    /* Keyframes for blinking animation */
-    @keyframes blink {
-      0%, 100% { opacity: 0; }
-      50% { opacity: 1; }
+    #site-subtitle {
+      font-size: 1.1rem;
+      font-weight: 700;
+      font-family: 'Cairo', 'Amiri', serif;
+      color: #ffcc00;
+      margin-top: 0.5rem;
+    }
+
+    main {
+      flex: 1;
+      max-width: 720px;
+      margin: 2rem auto;
+      padding: 1.5rem 2rem;
+      background: rgba(255 255 255 / 0.1);
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+
+    form { display: flex; flex-direction: column; }
+
+    label {
+      margin-top: 1.2rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    input[type="text"], select {
+      margin-top: 0.4rem;
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+    }
+
+    input[type="text"]:focus, select:focus {
+      background-color: #fff;
+      color: #333;
+    }
+
+    button {
+      margin-top: 2rem;
+      background: #ffcc00;
+      border: none;
+      padding: 0.9rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #333;
+      box-shadow: 0 4px 8px rgb(255 204 0 / 0.6);
+      font-family: 'Amiri', serif;
+      transition: background 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    button:hover {
+      background: #f2b800;
+      box-shadow: 0 6px 12px rgb(242 184 0 / 0.8);
+    }
+
+    #result {
+      margin-top: 2rem;
+      min-height: 180px;
+      background: rgba(255 255 255 / 0.15);
+      padding: 1rem 1.3rem;
+      border-radius: 8px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #fff;
+      box-shadow: inset 0 0 6px rgb(255 255 255 / 0.25);
+    }
+
+    .pricing-link {
+      margin-top: 1rem;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #ffcc00;
+      cursor: pointer;
+      text-align: center;
+      user-select: none;
+    }
+
+    footer {
+      background-color: rgba(0,0,0,0.4);
+      color: #ddd;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      user-select: none;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.15);
+    }
+
+    select option {
+      background-color: #fff;
+      color: #333;
+    }
+
+    @media (max-width: 480px) {
+      main { margin: 1rem; padding: 1rem; }
+      button { font-size: 1.1rem; }
     }
   </style>
 </head>
-<body class="text-gray-800 flex flex-col justify-between">
-
-  <!-- Header with site title and navigation -->
-  <header class="bg-gradient-to-r from-indigo-600 to-blue-500 shadow-md py-4">
-    <div class="container mx-auto flex justify-between items-center px-4">
-      <!-- Site name -->
-      <h1 class="text-2xl font-bold text-white">🧠 SmartArticle AI</h1>
-      <!-- Navigation links and language selector -->
-      <nav class="flex items-center gap-2">
-        <!-- Link to subscription/pricing page -->
-        <a href="pricing.html" class="text-white hover:text-yellow-300 mx-2">💰 <span id="pricing-label">الاشتراك</span></a>
-        <!-- Label for language selector (hidden on small screens) -->
-        <label for="language" class="text-sm text-white mr-2 hidden sm:inline" id="lang-label">اللغة:</label>
-        <!-- Language selector dropdown -->
-        <select id="language" class="border rounded p-1 text-sm">
-          <option value="ar">العربية</option>
-          <option value="en">English</option>
-          <option value="fr">Français</option>
-        </select>
-      </nav>
-    </div>
+<body>
+  <header>
+    <a href="index.html">🔙</a>
+    <div id="site-title">🧠 SmartArticle AI</div>
+    <div id="site-subtitle">Intelligent Multilingual Article Generator</div>
   </header>
 
-  <!-- Main content container -->
-  <main class="container mx-auto px-4 py-8 flex-grow">
-    <div class="bg-white p-6 rounded-2xl shadow-lg max-w-3xl mx-auto">
-      <!-- Title above the input -->
-      <h2 class="text-xl font-bold mb-4 text-center text-gray-700" id="input-title">✍️ أدخل موضوع المقال:</h2>
+  <main>
+    <form id="article-form">
+      <label id="label-topic" for="topic">Article Topic:</label>
+      <input type="text" id="topic" name="topic" placeholder="Enter article topic" required />
 
-      <!-- Input for article topic -->
-      <input id="topic" type="text" placeholder="مثال: تأثير الذكاء الاصطناعي على التعليم"
-             class="w-full p-3 rounded border focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4">
+      <label id="label-language" for="language">Language:</label>
+      <select id="language" name="language" required>
+        <option value="en" data-dir="ltr">🇺🇸 English</option>
+        <option value="ar" data-dir="rtl">🇸🇦 Arabic (العربية)</option>
+        <option value="fr" data-dir="ltr">🇫🇷 French</option>
+        <option value="es" data-dir="ltr">🇪🇸 Spanish</option>
+      </select>
 
-      <!-- Length selection dropdown -->
-      <div class="flex justify-between items-center mb-4">
-        <label for="length" class="text-gray-700 text-base font-medium" id="length-label">طول المقال:</label>
-        <select id="length" class="border rounded p-2 text-sm">
-          <option value="short">قصير</option>
-          <option value="medium" selected>متوسط</option>
-          <option value="long">طويل</option>
-        </select>
-      </div>
+      <button id="generate-btn" type="submit">Generate Article</button>
+    </form>
 
-      <!-- Button to trigger article generation -->
-      <button id="generate-button"
-              class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl font-semibold w-full transition duration-300">
-        🚀 توليد المقال
-      </button>
-
-      <!-- Result container where the generated article text will be displayed -->
-      <div id="result" class="mt-6 text-gray-800 transition-all duration-500">
-        📰 المقال سيظهر هنا...
-      </div>
-
-      <!-- Social share buttons with icons and external share links -->
-      <div class="flex justify-center space-x-4 mt-6 text-blue-600 text-xl rtl:space-x-reverse">
-        <a href="https://wa.me/?text=Check%20this%20article" title="شارك عبر واتساب" target="_blank"><i class="fab fa-whatsapp"></i></a>
-        <a href="https://www.facebook.com/sharer/sharer.php?u=https://smartarticle.example" title="شارك عبر فيسبوك" target="_blank"><i class="fab fa-facebook"></i></a>
-        <a href="https://twitter.com/intent/tweet?url=https://smartarticle.example" title="شارك عبر تويتر" target="_blank"><i class="fab fa-twitter"></i></a>
-        <a href="https://t.me/share/url?url=https://smartarticle.example" title="شارك عبر تيليجرام" target="_blank"><i class="fab fa-telegram"></i></a>
-        <a href="https://www.linkedin.com/shareArticle?mini=true&url=https://smartarticle.example" title="شارك عبر لينكدإن" target="_blank"><i class="fab fa-linkedin"></i></a>
-      </div>
-    </div>
+    <div id="result" aria-live="polite">📰 Article will appear here...</div>
+    <div class="pricing-link" onclick="openPricing()" id="pricing-link">View Pricing Plans →</div>
   </main>
 
-  <!-- Footer with copyright -->
-  <footer class="bg-gradient-to-r from-indigo-600 to-blue-500 shadow-inner py-4 mt-6">
-    <div class="container mx-auto text-center text-sm text-white font-semibold">
-      Nadim Al-Selwi © 2025 SmartArticle AI
-    </div>
-  </footer>
+  <footer id="footer">Developed by Nadim Al-Salawi — SmartArticle AI © 2025</footer>
 
   <script>
-    // Current UI language; default is Arabic
-    let currentLanguage = "ar";
-
-    // DOM elements references for convenience
-    const topicInput = document.getElementById("topic");
-    const resultBox = document.getElementById("result");
-    const lengthSelect = document.getElementById("length");
-    const lengthLabel = document.getElementById("length-label");
-
-    // Translations for UI text in Arabic, English, and French
-    const messages = {
+    // Translations for multiple UI texts and API messages
+    const translations = {
+      en: {
+        topic: "✍️ Enter article topic:",
+        placeholder: "Enter article topic",
+        language: "Language:",
+        generate: "Generate Article",
+        pricing: "View Pricing Plans →",
+        subtitle: "Intelligent Multilingual Article Generator",
+        footer: "Developed by Nadim Al-Salawi — SmartArticle AI © 2025",
+        loading: "⏳ Generating article...",
+        result: "📰 Article will appear here...",
+        empty: "Please enter an article topic.",
+        errorQuota: "❌ OpenAI quota exceeded or plan expired. Please upgrade your plan.",
+        errorFetch: "Failed to fetch article. Please try again later.",
+        errorUnknown: "An unknown error occurred."
+      },
       ar: {
+        topic: "✍️ أدخل موضوع المقال:",
         placeholder: "مثال: تأثير الذكاء الاصطناعي على التعليم",
+        language: "اللغة:",
+        generate: "إنشاء المقال",
+        pricing: "عرض خطط الاشتراك →",
+        subtitle: "مولّد ذكي متعدد اللغات للمقالات",
+        footer: "تم التطوير بواسطة نديم الصلوي — SmartArticle AI © ٢٠٢٥",
         loading: "⏳ جاري توليد المقال...",
         result: "📰 المقال سيظهر هنا...",
         empty: "يرجى إدخال موضوع المقال",
-        inputTitle: "✍️ أدخل موضوع المقال:",
-        lengthLabel: "طول المقال:",
-        pricing: "الاشتراك",
-        button: "🚀 توليد المقال"
-      },
-      en: {
-        placeholder: "Example: The impact of AI on education",
-        loading: "⏳ Generating the article...",
-        result: "📰 The article will appear here...",
-        empty: "Please enter an article topic",
-        inputTitle: "✍️ Enter the article topic:",
-        lengthLabel: "Article length:",
-        pricing: "Subscribe",
-        button: "🚀 Generate Article"
+        errorQuota: "❌ تم تجاوز حصة OpenAI أو انتهت صلاحية الخطة. يرجى ترقية الخطة.",
+        errorFetch: "فشل في جلب المقال. الرجاء المحاولة لاحقًا.",
+        errorUnknown: "حدث خطأ غير معروف."
       },
       fr: {
-        placeholder: "Exemple : L’impact de l’IA sur l’éducation",
-        loading: "⏳ Génération de l’article en cours...",
-        result: "📰 L’article apparaîtra ici...",
-        empty: "Veuillez entrer un sujet d’article",
-        inputTitle: "✍️ Saisissez le sujet de l’article :",
-        lengthLabel: "Longueur de l’article :",
-        pricing: "S'abonner",
-        button: "🚀 Générer l’article"
+        topic: "✍️ Entrez le sujet de l'article :",
+        placeholder: "Entrez le sujet de l'article",
+        language: "Langue :",
+        generate: "Générer l'article",
+        pricing: "Voir les formules →",
+        subtitle: "Générateur intelligent d’articles multilingues",
+        footer: "Développé par Nadim Al-Salawi — SmartArticle AI © 2025",
+        loading: "⏳ Génération de l'article...",
+        result: "📰 L'article s'affichera ici...",
+        empty: "Veuillez saisir un sujet d'article.",
+        errorQuota: "❌ Quota OpenAI dépassé ou abonnement expiré. Veuillez mettre à niveau votre plan.",
+        errorFetch: "Échec de la récupération de l'article. Veuillez réessayer plus tard.",
+        errorUnknown: "Une erreur inconnue est survenue."
+      },
+      es: {
+        topic: "✍️ Ingrese el tema del artículo:",
+        placeholder: "Ingrese el tema del artículo",
+        language: "Idioma:",
+        generate: "Generar Artículo",
+        pricing: "Ver planes de precios →",
+        subtitle: "Generador inteligente de artículos multilingües",
+        footer: "Desarrollado por Nadim Al-Salawi — SmartArticle AI © 2025",
+        loading: "⏳ Generando artículo...",
+        result: "📰 El artículo aparecerá aquí...",
+        empty: "Por favor, ingrese el tema del artículo.",
+        errorQuota: "❌ Cuota de OpenAI excedida o plan expirado. Por favor, actualice su plan.",
+        errorFetch: "Error al obtener el artículo. Por favor, inténtelo de nuevo más tarde.",
+        errorUnknown: "Ocurrió un error desconocido."
       }
     };
 
-    // Translations for the article length dropdown options and label
-    const lengthOptions = {
-      ar: { short: "قصير", medium: "متوسط", long: "طويل", label: "طول المقال:" },
-      en: { short: "Short", medium: "Medium", long: "Long", label: "Article length:" },
-      fr: { short: "Court", medium: "Moyen", long: "Long", label: "Longueur de l’article :" }
-    };
+    const languageSelect = document.getElementById("language");
+    const result = document.getElementById("result");
+    const articleForm = document.getElementById("article-form");
 
-    /**
-     * Updates the UI text content and input placeholders based on the selected language
-     * @param {string} lang - Language code ('ar', 'en', or 'fr')
-     */
-    function adjustLanguageUI(lang) {
-      topicInput.placeholder = messages[lang].placeholder;
-      resultBox.innerHTML = messages[lang].result;
-      document.getElementById("input-title").innerText = messages[lang].inputTitle;
-      document.getElementById("generate-button").innerText = messages[lang].button;
-      document.getElementById("pricing-label").innerText = messages[lang].pricing;
+    // Update UI texts and page direction based on selected language
+    function updateTexts() {
+      const lang = languageSelect.value;
+      const dir = languageSelect.selectedOptions[0].dataset.dir;
+      document.documentElement.lang = lang;
+      document.documentElement.dir = dir;
 
-      // Update the article length select options text and label
-      const opts = lengthOptions[lang];
-      lengthLabel.textContent = opts.label;
-      lengthSelect.innerHTML = `
-        <option value="short">${opts.short}</option>
-        <option value="medium" selected>${opts.medium}</option>
-        <option value="long">${opts.long}</option>
-      `;
+      const t = translations[lang];
+      document.getElementById("label-topic").textContent = t.topic;
+      document.getElementById("topic").placeholder = t.placeholder;
+      document.getElementById("label-language").textContent = t.language;
+      document.getElementById("generate-btn").textContent = t.generate;
+      document.getElementById("pricing-link").textContent = t.pricing;
+      document.getElementById("site-subtitle").textContent = t.subtitle;
+      document.getElementById("footer").textContent = t.footer;
+      result.textContent = t.result;
     }
 
-    /**
-     * Updates page direction and text alignment based on language (RTL for Arabic, LTR otherwise)
-     * @param {string} lang - Language code
-     */
-    function updatePageDirection(lang) {
-      const html = document.documentElement;
-      // Set HTML lang attribute and dir attribute
-      html.lang = lang;
-      html.dir = lang === "ar" ? "rtl" : "ltr";
+    languageSelect.addEventListener("change", updateTexts);
+    updateTexts();
 
-      // Set body CSS direction and text alignment accordingly
-      document.body.style.direction = lang === "ar" ? "rtl" : "ltr";
-      document.body.style.textAlign = lang === "ar" ? "right" : "left";
+    articleForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const topic = e.target.topic.value.trim();
+      const language = languageSelect.value;
+      const t = translations[language];
 
-      // Also update input and result box directions for correct input alignment
-      topicInput.style.direction = lang === "ar" ? "rtl" : "ltr";
-      topicInput.style.textAlign = lang === "ar" ? "right" : "left";
-      resultBox.style.direction = lang === "ar" ? "rtl" : "ltr";
-      resultBox.style.textAlign = lang === "ar" ? "right" : "left";
-    }
-
-    // Event listener for language selector dropdown changes
-    document.getElementById("language").addEventListener("change", (e) => {
-      currentLanguage = e.target.value;
-      adjustLanguageUI(currentLanguage);  // Update UI texts
-      updatePageDirection(currentLanguage); // Update directionality
-    });
-
-    // Event listener for generate button click
-    document.getElementById("generate-button").addEventListener("click", async () => {
-      const topic = topicInput.value.trim();
-      resultBox.innerHTML = "";
-
-      // Validate topic input is not empty
       if (!topic) {
-        alert(messages[currentLanguage].empty);
-        resultBox.innerHTML = messages[currentLanguage].result;
+        alert(t.empty);
         return;
       }
 
-      try {
-        // Show loading message
-        resultBox.innerHTML = messages[currentLanguage].loading;
+      result.textContent = t.loading;
 
-        // Send POST request to /generate endpoint with JSON body containing topic, language, and length
-        const response = await fetch("/generate", {
+      try {
+        const response = await fetch("http://localhost:3002/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ topic, language: currentLanguage, length: lengthSelect.value })
+          body: JSON.stringify({ topic, language })
         });
 
-        // Check for network or response body errors
-        if (!response.ok || !response.body) {
-          resultBox.innerHTML = '<span class="text-red-600">❌ خطأ في الاتصال بالخادم</span>';
+        if (!response.ok) {
+          // Try to parse error message from API response
+          let errorData;
+          try {
+            errorData = await response.json();
+          } catch {
+            // Failed to parse JSON error
+            result.textContent = t.errorUnknown;
+            return;
+          }
+
+          // Check if error message relates to quota or billing
+          if (errorData.error && /quota|billing|plan/i.test(errorData.error)) {
+            result.textContent = t.errorQuota;
+          } else {
+            // Show API error message or fallback generic error
+            result.textContent = "Error: " + (errorData.error || t.errorUnknown);
+          }
           return;
         }
 
-        // Read response stream using ReadableStream and display chunks as they arrive for live streaming effect
+        // Stream response body to show content incrementally
         const reader = response.body.getReader();
         const decoder = new TextDecoder("utf-8");
-        resultBox.innerHTML = ""; // Clear result box before streaming new content
+        result.textContent = "";
 
         while (true) {
           const { done, value } = await reader.read();
-          if (done) break; // Exit loop when stream ends
-          const chunk = decoder.decode(value, { stream: true });
-          resultBox.innerHTML += chunk; // Append chunk to result container
-          resultBox.scrollTop = resultBox.scrollHeight; // Scroll down automatically
+          if (done) break;
+          result.textContent += decoder.decode(value, { stream: true });
+          result.scrollTop = result.scrollHeight; // auto-scroll down
         }
 
-      } catch (err) {
-        // Show any caught errors in the result box
-        resultBox.innerHTML = `<span class="text-red-600">❌ ${err.message}</span>`;
+      } catch (error) {
+        console.error("Fetch error:", error);
+        result.textContent = t.errorFetch;
       }
     });
 
-    // Initialize UI on page load with default language settings
-    adjustLanguageUI(currentLanguage);
-    updatePageDirection(currentLanguage);
+    function openPricing() {
+      window.open("pricing.html", "_blank");
+    }
   </script>
 </body>
 </html>
