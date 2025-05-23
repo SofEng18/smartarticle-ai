@@ -4,26 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SmartArticle AI</title>
+  <!-- Tailwind CSS for styling -->
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <!-- Google Fonts: Cairo (Arabic friendly font) -->
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome for social icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
+    /* General body styles with font and background gradient */
     body {
       font-family: 'Cairo', sans-serif;
       background: linear-gradient(to bottom left, #f0f4f8, #cbd5e1);
       min-height: 100vh;
     }
+
+    /* Styling for the result container where generated article appears */
     #result {
-      white-space: pre-wrap;
-      word-wrap: break-word;
+      white-space: pre-wrap; /* preserve new lines */
+      word-wrap: break-word; /* allow long words to break */
       background-color: #f9fafb;
       border: 1px solid #e5e7eb;
       padding: 1rem;
       border-radius: 0.75rem;
       height: 16rem;
-      overflow-y: auto;
+      overflow-y: auto; /* enable vertical scrollbar when needed */
       position: relative;
     }
+
+    /* Animated blinking dot to show loading or active status */
     #result::after {
       content: "";
       position: absolute;
@@ -35,6 +43,8 @@
       border-radius: 50%;
       animation: blink 1s infinite;
     }
+
+    /* Keyframes for blinking animation */
     @keyframes blink {
       0%, 100% { opacity: 0; }
       50% { opacity: 1; }
@@ -43,13 +53,18 @@
 </head>
 <body class="text-gray-800 flex flex-col justify-between">
 
+  <!-- Header with site title and navigation -->
   <header class="bg-gradient-to-r from-indigo-600 to-blue-500 shadow-md py-4">
     <div class="container mx-auto flex justify-between items-center px-4">
+      <!-- Site name -->
       <h1 class="text-2xl font-bold text-white">🧠 SmartArticle AI</h1>
+      <!-- Navigation links and language selector -->
       <nav class="flex items-center gap-2">
-        <!-- Changed "الأسعار" to "الاشتراك" -->
+        <!-- Link to subscription/pricing page -->
         <a href="pricing.html" class="text-white hover:text-yellow-300 mx-2">💰 <span id="pricing-label">الاشتراك</span></a>
+        <!-- Label for language selector (hidden on small screens) -->
         <label for="language" class="text-sm text-white mr-2 hidden sm:inline" id="lang-label">اللغة:</label>
+        <!-- Language selector dropdown -->
         <select id="language" class="border rounded p-1 text-sm">
           <option value="ar">العربية</option>
           <option value="en">English</option>
@@ -59,11 +74,17 @@
     </div>
   </header>
 
+  <!-- Main content container -->
   <main class="container mx-auto px-4 py-8 flex-grow">
     <div class="bg-white p-6 rounded-2xl shadow-lg max-w-3xl mx-auto">
+      <!-- Title above the input -->
       <h2 class="text-xl font-bold mb-4 text-center text-gray-700" id="input-title">✍️ أدخل موضوع المقال:</h2>
+
+      <!-- Input for article topic -->
       <input id="topic" type="text" placeholder="مثال: تأثير الذكاء الاصطناعي على التعليم"
              class="w-full p-3 rounded border focus:outline-none focus:ring-2 focus:ring-blue-400 mb-4">
+
+      <!-- Length selection dropdown -->
       <div class="flex justify-between items-center mb-4">
         <label for="length" class="text-gray-700 text-base font-medium" id="length-label">طول المقال:</label>
         <select id="length" class="border rounded p-2 text-sm">
@@ -72,15 +93,19 @@
           <option value="long">طويل</option>
         </select>
       </div>
+
+      <!-- Button to trigger article generation -->
       <button id="generate-button"
               class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl font-semibold w-full transition duration-300">
         🚀 توليد المقال
       </button>
+
+      <!-- Result container where the generated article text will be displayed -->
       <div id="result" class="mt-6 text-gray-800 transition-all duration-500">
         📰 المقال سيظهر هنا...
       </div>
 
-      <!-- Social Share Icons with proper links -->
+      <!-- Social share buttons with icons and external share links -->
       <div class="flex justify-center space-x-4 mt-6 text-blue-600 text-xl rtl:space-x-reverse">
         <a href="https://wa.me/?text=Check%20this%20article" title="شارك عبر واتساب" target="_blank"><i class="fab fa-whatsapp"></i></a>
         <a href="https://www.facebook.com/sharer/sharer.php?u=https://smartarticle.example" title="شارك عبر فيسبوك" target="_blank"><i class="fab fa-facebook"></i></a>
@@ -91,6 +116,7 @@
     </div>
   </main>
 
+  <!-- Footer with copyright -->
   <footer class="bg-gradient-to-r from-indigo-600 to-blue-500 shadow-inner py-4 mt-6">
     <div class="container mx-auto text-center text-sm text-white font-semibold">
       Nadim Al-Selwi © 2025 SmartArticle AI
@@ -98,12 +124,16 @@
   </footer>
 
   <script>
+    // Current UI language; default is Arabic
     let currentLanguage = "ar";
+
+    // DOM elements references for convenience
     const topicInput = document.getElementById("topic");
     const resultBox = document.getElementById("result");
     const lengthSelect = document.getElementById("length");
     const lengthLabel = document.getElementById("length-label");
 
+    // Translations for UI text in Arabic, English, and French
     const messages = {
       ar: {
         placeholder: "مثال: تأثير الذكاء الاصطناعي على التعليم",
@@ -137,12 +167,17 @@
       }
     };
 
+    // Translations for the article length dropdown options and label
     const lengthOptions = {
       ar: { short: "قصير", medium: "متوسط", long: "طويل", label: "طول المقال:" },
       en: { short: "Short", medium: "Medium", long: "Long", label: "Article length:" },
       fr: { short: "Court", medium: "Moyen", long: "Long", label: "Longueur de l’article :" }
     };
 
+    /**
+     * Updates the UI text content and input placeholders based on the selected language
+     * @param {string} lang - Language code ('ar', 'en', or 'fr')
+     */
     function adjustLanguageUI(lang) {
       topicInput.placeholder = messages[lang].placeholder;
       resultBox.innerHTML = messages[lang].result;
@@ -150,6 +185,7 @@
       document.getElementById("generate-button").innerText = messages[lang].button;
       document.getElementById("pricing-label").innerText = messages[lang].pricing;
 
+      // Update the article length select options text and label
       const opts = lengthOptions[lang];
       lengthLabel.textContent = opts.label;
       lengthSelect.innerHTML = `
@@ -159,28 +195,40 @@
       `;
     }
 
+    /**
+     * Updates page direction and text alignment based on language (RTL for Arabic, LTR otherwise)
+     * @param {string} lang - Language code
+     */
     function updatePageDirection(lang) {
       const html = document.documentElement;
+      // Set HTML lang attribute and dir attribute
       html.lang = lang;
       html.dir = lang === "ar" ? "rtl" : "ltr";
+
+      // Set body CSS direction and text alignment accordingly
       document.body.style.direction = lang === "ar" ? "rtl" : "ltr";
       document.body.style.textAlign = lang === "ar" ? "right" : "left";
+
+      // Also update input and result box directions for correct input alignment
       topicInput.style.direction = lang === "ar" ? "rtl" : "ltr";
       topicInput.style.textAlign = lang === "ar" ? "right" : "left";
       resultBox.style.direction = lang === "ar" ? "rtl" : "ltr";
       resultBox.style.textAlign = lang === "ar" ? "right" : "left";
     }
 
+    // Event listener for language selector dropdown changes
     document.getElementById("language").addEventListener("change", (e) => {
       currentLanguage = e.target.value;
-      adjustLanguageUI(currentLanguage);
-      updatePageDirection(currentLanguage);
+      adjustLanguageUI(currentLanguage);  // Update UI texts
+      updatePageDirection(currentLanguage); // Update directionality
     });
 
+    // Event listener for generate button click
     document.getElementById("generate-button").addEventListener("click", async () => {
       const topic = topicInput.value.trim();
       resultBox.innerHTML = "";
 
+      // Validate topic input is not empty
       if (!topic) {
         alert(messages[currentLanguage].empty);
         resultBox.innerHTML = messages[currentLanguage].result;
@@ -188,36 +236,42 @@
       }
 
       try {
+        // Show loading message
         resultBox.innerHTML = messages[currentLanguage].loading;
 
+        // Send POST request to /generate endpoint with JSON body containing topic, language, and length
         const response = await fetch("/generate", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ topic, language: currentLanguage, length: lengthSelect.value })
         });
 
+        // Check for network or response body errors
         if (!response.ok || !response.body) {
           resultBox.innerHTML = '<span class="text-red-600">❌ خطأ في الاتصال بالخادم</span>';
           return;
         }
 
+        // Read response stream using ReadableStream and display chunks as they arrive for live streaming effect
         const reader = response.body.getReader();
         const decoder = new TextDecoder("utf-8");
-        resultBox.innerHTML = "";
+        resultBox.innerHTML = ""; // Clear result box before streaming new content
 
         while (true) {
           const { done, value } = await reader.read();
-          if (done) break;
+          if (done) break; // Exit loop when stream ends
           const chunk = decoder.decode(value, { stream: true });
-          resultBox.innerHTML += chunk;
-          resultBox.scrollTop = resultBox.scrollHeight;
+          resultBox.innerHTML += chunk; // Append chunk to result container
+          resultBox.scrollTop = resultBox.scrollHeight; // Scroll down automatically
         }
 
       } catch (err) {
+        // Show any caught errors in the result box
         resultBox.innerHTML = `<span class="text-red-600">❌ ${err.message}</span>`;
       }
     });
 
+    // Initialize UI on page load with default language settings
     adjustLanguageUI(currentLanguage);
     updatePageDirection(currentLanguage);
   </script>
