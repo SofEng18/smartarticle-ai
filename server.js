@@ -1,17 +1,12 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import fs from "fs";
-import path from "path";
 import { OpenAI } from "openai";
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3002;
-
-// Path to maintenance flag file
-const maintenanceFlagPath = path.join(process.cwd(), "maintenance.flag");
 
 // Initialize OpenAI client with API key from environment variable
 const openai = new OpenAI({
@@ -21,18 +16,32 @@ const openai = new OpenAI({
 app.use(cors());
 app.use(express.json());
 
-// Middleware to check maintenance mode
-app.use((req, res, next) => {
-  if (fs.existsSync(maintenanceFlagPath)) {
-    // If maintenance.flag exists, block all requests except for a health check
-    if (req.path === "/") {
-      return next();
-    }
-    return res.status(503).json({
-      error: "🛠️ الموقع تحت الصيانة حالياً، يرجى المحاولة لاحقاً.",
-    });
+// Simple in-memory maintenance flag (false by default)
+let maintenanceMode = false;
+
+/**
+ * Endpoint to get maintenance status
+ * GET /maintenance-status
+ * Response: { maintenance: boolean }
+ */
+app.get("/maintenance-status", (req, res) => {
+  res.json({ maintenance: maintenanceMode });
+});
+
+/**
+ * Endpoint to set maintenance mode (optional for admin use)
+ * POST /maintenance-status
+ * Body: { maintenance: boolean }
+ * For security, add auth in real use; here it's open for simplicity
+ */
+app.post("/maintenance-status", (req, res) => {
+  const { maintenance } = req.body;
+  if (typeof maintenance === "boolean") {
+    maintenanceMode = maintenance;
+    res.json({ maintenance: maintenanceMode });
+  } else {
+    res.status(400).json({ error: "Invalid 'maintenance' value, must be boolean." });
   }
-  next();
 });
 
 // Simple health check endpoint
@@ -47,6 +56,13 @@ app.get("/", (req, res) => {
  */
 app.post("/generate", async (req, res) => {
   try {
+    if (maintenanceMode) {
+      // Reject requests with 503 if maintenance is on
+      return res.status(503).json({
+        error: "🛠️ الموقع تحت الصيانة حالياً، يرجى المحاولة لاحقاً.",
+      });
+    }
+
     const { topic, language, length } = req.body;
 
     if (!topic) {
@@ -86,31 +102,14 @@ app.post("/generate", async (req, res) => {
   }
 });
 
-// Sitemap endpoint
-app.get("/sitemap.xml", (req, res) => {
-  const baseUrl = process.env.BASE_URL || `http://localhost:${port}`;
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>${baseUrl}/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/generate</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>${baseUrl}/pricing</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-</urlset>`;
-
-  res.header("Content-Type", "application/xml");
-  res.send(sitemap);
+// Google Analytics test code snippet (commented)
+// Add your Google Analytics ID in .env or here and uncomment below
+/*
+app.use((req, res, next) => {
+  // Google Analytics tracking code could be injected here for server-rendered pages if needed
+  next();
 });
+*/
 
 app.listen(port, () => {
   console.log(`SmartArticle AI server listening at http://localhost:${port}`);
