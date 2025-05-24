@@ -68,9 +68,9 @@ app.post('/generate', async (req, res) => {
   } catch (error) {
     console.error('OpenAI request failed:', error);
     if (error.status === 429) {
-      res.status(429).send("❌ OpenAI quota exceeded or plan expired. Please upgrade your plan.");
+      res.status(429).send("🛠️ We're currently performing scheduled maintenance to improve your experience. Please check back shortly. Thank you for your patience.");
     } else {
-      res.status(500).send("❌ Failed to fetch article. Please try again later.");
+      res.status(500).send("❌ 🛠️ Maintenance mode is active. Rejecting request.");
     }
   }
 });
