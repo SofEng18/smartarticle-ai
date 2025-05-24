@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://smartarticle-ai-1.onrender.com/sitemap.xml

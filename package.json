@@ -33,7 +33,10 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/SofEng18/SmartArticle-AI.git"
+    "url": "git+https://github.com/SofEng18/SmartArticle-AI.git"
   },
-  "homepage": "./"
+  "homepage": "http://./",
+  "bugs": {
+    "url": "https://github.com/SofEng18/SmartArticle-AI/issues"
+  }
 }
