@@ -1,0 +1,187 @@
+/* Reset & box-sizing */
+* {
+  box-sizing: border-box;
+}
+
+/* Body styling with gradient and font */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Link styles */
+a {
+  color: #ffcc00;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* Header styling */
+header {
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 1rem 2rem;
+  text-align: center;
+  font-weight: 700;
+  font-size: 1.8rem;
+  letter-spacing: 2px;
+  user-select: none;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Main content */
+main {
+  flex: 1;
+  max-width: 720px;
+  margin: 2rem auto;
+  padding: 1.5rem 2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Form layout */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Label styling */
+label {
+  margin-top: 1.2rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* Inputs and dropdowns */
+input[type="text"],
+select {
+  margin-top: 0.4rem;
+  padding: 0.6rem 1rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: none;
+  outline: none;
+  transition: background-color 0.3s ease;
+}
+
+/* Focus effect */
+input[type="text"]:focus,
+select:focus {
+  background-color: #fff;
+  color: #333;
+}
+
+/* Enhanced dropdown styling */
+select {
+  background-color: #f8f8f8;
+  color: #333;
+}
+
+/* Submit button */
+button {
+  margin-top: 2rem;
+  background: #ffcc00;
+  border: none;
+  padding: 0.9rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #333;
+  box-shadow: 0 4px 8px rgba(255, 204, 0, 0.6);
+  transition: background 0.3s ease;
+  user-select: none;
+}
+
+button:hover {
+  background: #f2b800;
+  box-shadow: 0 6px 12px rgba(242, 184, 0, 0.8);
+}
+
+/* Article result area */
+#result {
+  position: relative;
+  margin-top: 2rem;
+  min-height: 180px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 1rem 1.3rem;
+  border-radius: 8px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #fff;
+  box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.25);
+  transition: background 0.3s ease;
+}
+
+/* Watermark */
+#result::before {
+  content: "📰 Generated article";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 4rem;
+  color: rgba(255, 255, 255, 0.12);
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  z-index: 0;
+}
+
+/* Ensure article content is on top */
+#result > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Show spinner while loading */
+.loading #result {
+  background: rgba(255, 255, 255, 0.1) url('/loading-spinner.svg') center center no-repeat;
+  background-size: 48px 48px;
+  color: transparent;
+}
+
+/* Footer styling */
+footer {
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #ddd;
+  text-align: center;
+  padding: 1rem 1rem;
+  font-size: 0.9rem;
+  user-select: none;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.15);
+}
+
+/* Pricing button */
+.pricing-link {
+  display: inline-block;
+  margin-top: 1rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #ffcc00;
+  cursor: pointer;
+  text-align: center;
+}
+.pricing-link:hover {
+  text-decoration: underline;
+}
+
+/* Responsive for small devices */
+@media (max-width: 480px) {
+  main {
+    margin: 1rem;
+    padding: 1rem;
+  }
+  button {
+    font-size: 1.1rem;
+  }
+}

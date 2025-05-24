@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pricing — SmartArticle AI</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s ease;
+    }
+    [dir="rtl"] body {
+      font-family: 'Cairo', sans-serif;
+    }
+    header {
+      background-color: rgba(0,0,0,0.4);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    header h1 {
+      margin: 0;
+      flex-grow: 1;
+      color: #ffcc00;
+      font-weight: 700;
+      font-size: 1.8rem;
+      text-align: center;
+    }
+    select#language {
+      background: #ffcc00;
+      border: none;
+      padding: 0.4rem 0.6rem;
+      border-radius: 8px;
+      font-weight: 700;
+      color: #333;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+    }
+    select#language option {
+      color: #000;
+    }
+    a.back-link {
+      color: #ffeb99;
+      text-decoration: none;
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+    a.back-link:hover {
+      color: #fff;
+    }
+    main {
+      flex: 1;
+      max-width: 960px;
+      margin: 2rem auto;
+      padding: 1.5rem 2rem;
+      background: rgba(255 255 255 / 0.1);
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: clamp(1.6rem, 2vw, 1.8rem);
+      user-select: none;
+      color: #ffeb99;
+    }
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .plan {
+      background: rgba(255 255 255 / 0.15);
+      border-radius: 16px;
+      padding: 1.8rem 1.5rem;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .plan:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+    }
+    .plan h3 {
+      margin-top: 0;
+      font-size: 1.5rem;
+      color: #ffcc00;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .plan p {
+      font-size: 1rem;
+      margin: 0.3rem 0;
+      text-align: center;
+    }
+    .price {
+      font-weight: 700;
+      font-size: 2rem;
+      margin: 1rem 0;
+      color: #ffd700;
+    }
+    button {
+      margin-top: auto;
+      background: #ffcc00;
+      border: none;
+      padding: 0.9rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      font-family: 'Cairo', sans-serif;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #333;
+      box-shadow: 0 4px 8px rgb(255 204 0 / 0.6);
+      transition: background 0.3s ease;
+      width: 100%;
+    }
+    button:hover:not(:disabled) {
+      background: #f2b800;
+      box-shadow: 0 6px 12px rgb(242 184 0 / 0.8);
+    }
+    button:disabled {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow: none;
+      color: #666;
+    }
+    footer {
+      background-color: rgba(0,0,0,0.4);
+      color: #ddd;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.15);
+      margin-top: 2rem;
+    }
+    @media (max-width: 480px) {
+      main {
+        margin: 1rem;
+        padding: 1rem;
+      }
+      button {
+        font-size: 1.1rem;
+      }
+      header h1 {
+        font-size: 1.5rem;
+      }
+      a.back-link {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html" class="back-link" title="Back to Home">🏠</a>
+    <h1>🧠 SmartArticle AI</h1>
+    <select id="language">
+      <option value="ar">🇸🇦 العربية</option>
+      <option value="en" selected>🇺🇸 English</option>
+      <option value="fr">🇫🇷 Français</option>
+      <option value="es">🇪🇸 Español</option>
+    </select>
+  </header>
+
+  <main>
+    <h2 id="plansTitle">💳 Subscription Plans</h2>
+    <div class="plans-grid">
+      <div class="plan">
+        <h3><span>🚀</span> <span id="freeTitle">Free Plan</span></h3>
+        <p id="freeDesc">1 article per day</p>
+        <p class="price" id="freePrice">Free</p>
+        <button disabled id="freeBtn">Current Plan</button>
+      </div>
+
+      <div class="plan" style="border: 2px solid #ffcc00;">
+        <h3><span>💳</span> <span id="monthlyTitle">Monthly Plan</span></h3>
+        <p id="monthlyDesc">Unlimited articles + full support</p>
+        <p class="price" id="monthlyPrice">$3.99 / month</p>
+        <button id="monthlyBtn" onclick="window.open('https://buy.stripe.com/test_bJe00l93083qgYh9DB43S00', '_blank')">
+          Subscribe Monthly
+        </button>
+      </div>
+
+      <div class="plan">
+        <h3><span>🏆</span> <span id="yearlyTitle">Yearly Plan</span></h3>
+        <p id="yearlyDesc">Best value: 20% discount</p>
+        <p class="price" id="yearlyPrice">$24.99 / year</p>
+        <button id="yearlyBtn" onclick="window.open('https://buy.stripe.com/test_28EeVfdjgfvScI1g1Z43S01', '_blank')">
+          Subscribe Yearly
+        </button>
+      </div>
+    </div>
+  </main>
+
+  <footer id="site-footer">
+    Developed by Nadim Al-Selwi — SmartArticle AI © 2025
+  </footer>
+
+  <script>
+    const languageSelector = document.getElementById("language");
+    const plansTitle = document.getElementById("plansTitle");
+    const footer = document.getElementById("site-footer");
+
+    function updateFooterText(lang) {
+      switch(lang) {
+        case "ar":
+          footer.textContent = "تم التطوير بواسطة نديم الصلوي — SmartArticle AI © 2025"; break;
+        case "fr":
+          footer.textContent = "Développé par Nadim Al-Selwi — SmartArticle AI © 2025"; break;
+        case "es":
+          footer.textContent = "Desarrollado por Nadim Al-Selwi — SmartArticle AI © 2025"; break;
+        default:
+          footer.textContent = "Developed by Nadim Al-Selwi — SmartArticle AI © 2025";
+      }
+    }
+
+    function updateLanguageContent(lang) {
+      const langMap = {
+        ar: {
+          dir: "rtl", title: "💳 خطط الاشتراك",
+          plans: [
+            ["الخطة المجانية", "مقال واحد يومياً", "مجاني", "الخطة الحالية"],
+            ["الخطة الشهرية", "مقالات غير محدودة + دعم كامل", "٣.٩٩$ / شهر", "اشترك شهريًا"],
+            ["الخطة السنوية", "أفضل قيمة: خصم ٢٠٪", "٢٤.٩٩$ / سنة", "اشترك سنويًا"]
+          ]
+        },
+        fr: {
+          dir: "ltr", title: "💳 Plans d'abonnement",
+          plans: [
+            ["Plan Gratuit", "1 article par jour", "Gratuit", "Plan actuel"],
+            ["Plan Mensuel", "Articles illimités + support complet", "3,99 $ / mois", "S'abonner mensuellement"],
+            ["Plan Annuel", "Meilleur rapport qualité/prix : 20% de réduction", "24,99 $ / an", "S'abonner annuellement"]
+          ]
+        },
+        es: {
+          dir: "ltr", title: "💳 Planes de suscripción",
+          plans: [
+            ["Plan Gratis", "1 artículo por día", "Gratis", "Plan actual"],
+            ["Plan Mensual", "Artículos ilimitados + soporte completo", "3,99 $ / mes", "Suscribirse mensualmente"],
+            ["Plan Anual", "Mejor valor: 20% de descuento", "24,99 $ / año", "Suscribirse anualmente"]
+          ]
+        },
+        en: {
+          dir: "ltr", title: "💳 Subscription Plans",
+          plans: [
+            ["Free Plan", "1 article per day", "Free", "Current Plan"],
+            ["Monthly Plan", "Unlimited articles + full support", "$3.99 / month", "Subscribe Monthly"],
+            ["Yearly Plan", "Best value: 20% discount", "$24.99 / year", "Subscribe Yearly"]
+          ]
+        }
+      };
+      const d = langMap[lang];
+      document.documentElement.lang = lang;
+      document.documentElement.dir = d.dir;
+      plansTitle.textContent = d.title;
+      ["free", "monthly", "yearly"].forEach((id, i) => {
+        document.getElementById(`${id}Title`).textContent = d.plans[i][0];
+        document.getElementById(`${id}Desc`).textContent = d.plans[i][1];
+        document.getElementById(`${id}Price`).textContent = d.plans[i][2];
+        document.getElementById(`${id}Btn`).textContent = d.plans[i][3];
+      });
+    }
+
+    languageSelector.addEventListener("change", () => {
+      const lang = languageSelector.value;
+      updateLanguageContent(lang);
+      updateFooterText(lang);
+    });
+
+    // Initial load
+    updateLanguageContent(languageSelector.value);
+    updateFooterText(languageSelector.value);
+  </script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>SmartArticle AI</title>
+
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CP8WC7JFYH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-CP8WC7JFYH');
+  </script>
+
+  <!-- Meta and Sitemap -->
+  <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE_HERE" />
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600&family=Amiri&display=swap" rel="stylesheet" />
+
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background-color: rgba(0,0,0,0.4);
+      padding: 1rem 2rem;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      color: #ffcc00;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      position: relative;
+    }
+    header a {
+      color: #ffcc00;
+      font-size: 1.4rem;
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      text-decoration: none;
+    }
+    #site-subtitle {
+      font-size: 1.1rem;
+      font-weight: 700;
+      font-family: 'Cairo', 'Amiri', serif;
+      color: #ffcc00;
+      margin-top: 0.5rem;
+    }
+    main {
+      flex: 1;
+      max-width: 720px;
+      margin: 2rem auto;
+      padding: 1.5rem 2rem;
+      background: rgba(255 255 255 / 0.1);
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+    }
+    form { display: flex; flex-direction: column; }
+    label {
+      margin-top: 1.2rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+    input[type="text"], select {
+      margin-top: 0.4rem;
+      padding: 0.6rem 1rem;
+      font-size: 1rem;
+      border-radius: 6px;
+      border: none;
+      outline: none;
+    }
+    input[type="text"]:focus, select:focus {
+      background-color: #fff;
+      color: #333;
+    }
+    button {
+      margin-top: 2rem;
+      background: #ffcc00;
+      border: none;
+      padding: 0.9rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #333;
+      font-family: 'Amiri', serif;
+    }
+    button:hover {
+      background: #f2b800;
+    }
+    #result {
+      margin-top: 2rem;
+      min-height: 180px;
+      background: rgba(255 255 255 / 0.15);
+      padding: 1rem 1.3rem;
+      border-radius: 8px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: #fff;
+    }
+    .pricing-link {
+      margin-top: 1rem;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #ffcc00;
+      text-align: center;
+      cursor: pointer;
+    }
+    footer {
+      background-color: rgba(0,0,0,0.4);
+      color: #ddd;
+      text-align: center;
+      padding: 1rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="index.html">🔙</a>
+    <div>🧠 SmartArticle AI</div>
+    <div id="site-subtitle">Intelligent Multilingual Article Generator</div>
+  </header>
+
+  <main>
+    <form id="article-form">
+      <label id="label-topic" for="topic">Article Topic:</label>
+      <input type="text" id="topic" name="topic" placeholder="Enter article topic" required />
+
+      <label id="label-language" for="language">Language:</label>
+      <select id="language" name="language" required>
+        <option value="en">🇺🇸 English</option>
+        <option value="ar">🇸🇦 Arabic (العربية)</option>
+        <option value="fr">🇫🇷 French</option>
+        <option value="es">🇪🇸 Spanish</option>
+      </select>
+
+      <button id="generate-btn" type="submit">Generate Article</button>
+    </form>
+
+    <div id="result" aria-live="polite">📰 Article will appear here...</div>
+    <div class="pricing-link" onclick="openPricing()" id="pricing-link">View Pricing Plans →</div>
+  </main>
+
+  <footer id="footer">Developed by Nadim Al-Salawi — SmartArticle AI © 2025</footer>
+
+  <script>
+    const translations = {
+      en: {
+        topic: "✍️ Enter article topic:",
+        placeholder: "Enter article topic",
+        language: "Language:",
+        generate: "Generate Article",
+        pricing: "View Pricing Plans →",
+        subtitle: "Intelligent Multilingual Article Generator",
+        footer: "Developed by Nadim Al-Salawi — SmartArticle AI © 2025",
+        loading: "⏳ Generating article...",
+        result: "📰 Article will appear here...",
+        empty: "Please enter an article topic.",
+        errorQuota: "❌ OpenAI quota exceeded or plan expired. Please upgrade your plan.",
+        errorFetch: "Failed to fetch article. Please try again later.",
+        errorUnknown: "An unknown error occurred."
+      },
+      ar: {
+        topic: "✍️ أدخل موضوع المقال:",
+        placeholder: "مثال: تأثير الذكاء الاصطناعي على التعليم",
+        language: "اللغة:",
+        generate: "إنشاء المقال",
+        pricing: "عرض خطط الاشتراك →",
+        subtitle: "مولّد ذكي متعدد اللغات للمقالات",
+        footer: "تم التطوير بواسطة نديم الصلوي — SmartArticle AI © ٢٠٢٥",
+        loading: "⏳ جاري توليد المقال...",
+        result: "📰 المقال سيظهر هنا...",
+        empty: "يرجى إدخال موضوع المقال",
+        errorQuota: "❌ تم تجاوز حصة OpenAI أو انتهت صلاحية الخطة. يرجى ترقية الخطة.",
+        errorFetch: "فشل في جلب المقال. الرجاء المحاولة لاحقًا.",
+        errorUnknown: "حدث خطأ غير معروف."
+      }
+    };
+
+    const form = document.getElementById("article-form");
+    const resultDiv = document.getElementById("result");
+    const languageSelect = document.getElementById("language");
+
+    function updateUI(lang) {
+      const t = translations[lang];
+      document.getElementById("label-topic").textContent = t.topic;
+      document.getElementById("topic").placeholder = t.placeholder;
+      document.getElementById("label-language").textContent = t.language;
+      document.getElementById("generate-btn").textContent = t.generate;
+      document.getElementById("pricing-link").textContent = t.pricing;
+      document.getElementById("site-subtitle").textContent = t.subtitle;
+      document.getElementById("footer").textContent = t.footer;
+      document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+    }
+
+    languageSelect.addEventListener("change", () => updateUI(languageSelect.value));
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const topic = document.getElementById("topic").value.trim();
+      const language = languageSelect.value;
+      const t = translations[language];
+
+      if (!topic) {
+        resultDiv.textContent = t.empty;
+        return;
+      }
+
+      resultDiv.textContent = t.loading;
+
+      try {
+        const response = await fetch("/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ topic, language })
+        });
+
+        if (!response.ok) {
+          const errText = await response.text();
+          resultDiv.textContent = errText.includes("quota") ? t.errorQuota : t.errorFetch;
+          return;
+        }
+
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder("utf-8");
+        let article = "";
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          article += decoder.decode(value, { stream: true });
+          resultDiv.textContent = article;
+        }
+      } catch (err) {
+        resultDiv.textContent = translations[language].errorUnknown;
+      }
+    });
+
+    function openPricing() {
+      window.location.href = "pricing.html";
+    }
+
+    updateUI(languageSelect.value);
+  </script>
+</body>
+</html>
