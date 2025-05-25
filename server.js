@@ -1,4 +1,4 @@
-// SmartArticle-AI server.js (ES module, OpenAI SDK v4 streaming)
+// server.js - SmartArticle AI minimal & fast version
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -15,7 +15,7 @@ const __dirname = path.dirname(__filename);
 dotenv.config();
 
 const app = express();
-const port = 3002;
+const port = process.env.PORT || 3002;
 
 // Middleware
 app.use(cors());
@@ -46,9 +46,9 @@ app.post('/generate', async (req, res) => {
   const userPrompt = prompts[language](topic);
 
   try {
-    // Create streaming chat completion with roles
+    // Use GPT-3.5-turbo model (faster & cheaper)
     const stream = await openai.chat.completions.create({
-      model: 'gpt-4',
+      model: 'gpt-3.5-turbo',
       messages: [{ role: 'user', content: userPrompt }],
       temperature: 0.7,
       stream: true,
@@ -56,21 +56,21 @@ app.post('/generate', async (req, res) => {
 
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
 
-    // Async iteration over streaming chunks
     for await (const part of stream) {
       const content = part.choices?.[0]?.delta?.content;
-      if (content) {
-        res.write(content);
-      }
+      if (content) res.write(content);
     }
-
     res.end();
+
   } catch (error) {
     console.error('OpenAI request failed:', error);
+
     if (error.status === 429) {
-      res.status(429).send("🛠️ We're currently performing scheduled maintenance to improve your experience. Please check back shortly. Thank you for your patience.");
+      // Rate limit or quota exceeded
+      res.status(429).send("❌ OpenAI quota exceeded. Please check your plan.");
     } else {
-      res.status(500).send("❌ 🛠️ Maintenance mode is active. Rejecting request.");
+      // Other errors
+      res.status(500).send("❌ An error occurred. Please try again later.");
     }
   }
 });
