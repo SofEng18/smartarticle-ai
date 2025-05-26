@@ -1,9 +1,10 @@
-// server.js - SmartArticle AI minimal & fast version
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';  // <-- import cookie-parser
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import OpenAI from 'openai';
 
@@ -17,7 +18,60 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3002;
 
-// Middleware
+// Middleware to show maintenance message if maintenance.flag exists
+app.use((req, res, next) => {
+  const maintenanceFile = path.join(__dirname, 'maintenance.flag');
+  if (fs.existsSync(maintenanceFile)) {
+    return res.status(503).send(`
+      <html>
+        <head>
+          <title>🚧 Maintenance Mode</title>
+          <style>
+            body {
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+              background-color: #f9f9f9;
+              color: #333;
+              text-align: center;
+              padding: 60px 20px;
+            }
+            h1 {
+              color: #d35400;
+              font-size: 2.5rem;
+            }
+            p {
+              font-size: 1.25rem;
+              max-width: 600px;
+              margin: 20px auto;
+              line-height: 1.5;
+            }
+            footer {
+              margin-top: 40px;
+              font-size: 0.9rem;
+              color: #666;
+            }
+          </style>
+        </head>
+        <body>
+          <h1>🚧 الموقع تحت الصيانة / Site Under Maintenance</h1>
+          <p>
+            شكراً لزيارتكم واهتمامكم.<br/>
+            نحن حالياً نقوم ببعض التحديثات لتحسين تجربتكم.<br/>
+            الرجاء العودة لاحقاً. نقدر صبركم وتفهمكم.<br/><br/>
+            Thank you for visiting and your patience.<br/>
+            We are currently performing updates to improve your experience.<br/>
+            Please check back soon.
+          </p>
+          <footer>نديم الصلوي &copy; 2025</footer>
+        </body>
+      </html>
+    `);
+  }
+  next();
+});
+
+// Use cookie-parser middleware
+app.use(cookieParser());
+
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -34,6 +88,31 @@ const prompts = {
   fr: (topic) => `Rédigez un article détaillé et bien structuré sur : "${topic}".`,
   es: (topic) => `Escribe un artículo detallado y bien estructurado sobre: "${topic}".`,
 };
+
+// Example: Set a cookie on first visit or read it if already set
+app.get('/', (req, res, next) => {
+  // Read cookie named 'visitor'
+  const visitor = req.cookies.visitor;
+
+  if (!visitor) {
+    // Set cookie if not set
+    res.cookie('visitor', 'true', {
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      httpOnly: true,
+      sameSite: 'lax',
+    });
+    console.log('New visitor cookie set.');
+  } else {
+    console.log('Visitor cookie found.');
+  }
+
+  next(); // Proceed to serve index.html below
+});
+
+// Serve index.html at root
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 
 // POST /generate endpoint
 app.post('/generate', async (req, res) => {
@@ -73,11 +152,6 @@ app.post('/generate', async (req, res) => {
       res.status(500).send("❌ An error occurred. Please try again later.");
     }
   }
-});
-
-// Serve index.html at root
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Start server
