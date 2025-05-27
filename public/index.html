@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
@@ -22,8 +22,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Cairo:wght@600&family=Amiri&display=swap" rel="stylesheet" />
 
   <style>
+    /* your existing CSS unchanged */
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
@@ -34,7 +34,6 @@
       flex-direction: column;
       transition: font-family 0.3s ease;
     }
-
     header {
       background-color: rgba(0,0,0,0.4);
       padding: 1rem 2rem;
@@ -46,7 +45,6 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.2);
       position: relative;
     }
-
     header a {
       color: #ffcc00;
       font-size: 1.4rem;
@@ -56,7 +54,6 @@
       transform: translateY(-50%);
       text-decoration: none;
     }
-
     #site-subtitle {
       font-size: 1.1rem;
       font-weight: 700;
@@ -65,7 +62,6 @@
       margin-top: 0.5rem;
       transition: font-family 0.3s ease;
     }
-
     main {
       flex: 1;
       max-width: 720px;
@@ -75,15 +71,12 @@
       border-radius: 12px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.15);
     }
-
     form { display: flex; flex-direction: column; }
-
     label {
       margin-top: 1.2rem;
       font-weight: 600;
       font-size: 1.1rem;
     }
-
     input[type="text"], select {
       margin-top: 0.4rem;
       padding: 0.6rem 1rem;
@@ -92,12 +85,10 @@
       border: none;
       outline: none;
     }
-
     input[type="text"]:focus, select:focus {
       background-color: #fff;
       color: #333;
     }
-
     button {
       margin-top: 2rem;
       background: #ffcc00;
@@ -111,11 +102,9 @@
       font-family: 'Inter', sans-serif;
       transition: font-family 0.3s ease;
     }
-
     button:hover {
       background: #f2b800;
     }
-
     #result {
       margin-top: 2rem;
       min-height: 180px;
@@ -130,7 +119,6 @@
       font-family: 'Inter', sans-serif;
       transition: font-family 0.3s ease;
     }
-
     .pricing-link {
       margin-top: 1rem;
       font-weight: 600;
@@ -139,7 +127,6 @@
       text-align: center;
       cursor: pointer;
     }
-
     footer {
       background-color: rgba(0,0,0,0.4);
       color: #ddd;
@@ -251,6 +238,7 @@
     const form = document.getElementById("article-form");
     const resultDiv = document.getElementById("result");
     const languageSelect = document.getElementById("language");
+    const generateBtn = document.getElementById("generate-btn");
 
     function updateUI(lang) {
       const t = translations[lang];
@@ -297,6 +285,10 @@
         return;
       }
 
+      // Disable language select and generate button during generation
+      languageSelect.disabled = true;
+      generateBtn.disabled = true;
+
       resultDiv.textContent = t.loading;
 
       try {
@@ -323,6 +315,10 @@
         }
       } catch (error) {
         resultDiv.textContent = t.errorUnknown;
+      } finally {
+        // Re-enable language select and generate button after generation or error
+        languageSelect.disabled = false;
+        generateBtn.disabled = false;
       }
     });
 
@@ -330,7 +326,7 @@
       window.location.href = "pricing.html";
     }
 
-    // Initialize UI
+    // Initialize UI with default language
     updateUI(languageSelect.value);
   </script>
 </body>
