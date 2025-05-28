@@ -12,17 +12,16 @@ import OpenAI from 'openai';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Load environment variables from .env file
+// Load env vars from .env
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3002;
 
-// Middleware to show maintenance message if maintenance.flag file exists
+// Middleware to show maintenance message if maintenance.flag exists
 app.use((req, res, next) => {
   const maintenanceFile = path.join(__dirname, 'maintenance.flag');
   if (fs.existsSync(maintenanceFile)) {
-    // Send friendly HTML maintenance page
     return res.status(503).send(`
       <html>
         <head>
@@ -70,24 +69,19 @@ app.use((req, res, next) => {
   next();
 });
 
-// Middleware: cookie-parser to parse cookies
+// Use cookie-parser middleware
 app.use(cookieParser());
 
-// Middleware: enable CORS for all origins (adjust if needed)
 app.use(cors());
-
-// Middleware: parse JSON bodies
 app.use(bodyParser.json());
-
-// Serve static files from 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Initialize OpenAI client with your API key
+// OpenAI client with your API key
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// Multilingual prompt templates for article generation
+// Multilingual prompt templates
 const prompts = {
   en: (topic) => `Write a detailed, well-structured article about: "${topic}".`,
   ar: (topic) => `اكتب مقالًا مفصلًا ومنظمًا جيدًا حول: "${topic}".`,
@@ -95,14 +89,15 @@ const prompts = {
   es: (topic) => `Escribe un artículo detallado y bien estructurado sobre: "${topic}".`,
 };
 
-// Example route: set or read 'visitor' cookie on root access
+// Example: Set a cookie on first visit or read it if already set
 app.get('/', (req, res, next) => {
+  // Read cookie named 'visitor'
   const visitor = req.cookies.visitor;
 
   if (!visitor) {
-    // Set cookie for new visitor, expires in 30 days
+    // Set cookie if not set
     res.cookie('visitor', 'true', {
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in ms
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       httpOnly: true,
       sameSite: 'lax',
     });
@@ -111,19 +106,18 @@ app.get('/', (req, res, next) => {
     console.log('Visitor cookie found.');
   }
 
-  next(); // Continue to next middleware to serve index.html
+  next(); // Proceed to serve index.html below
 });
 
-// Serve index.html at the root URL
+// Serve index.html at root
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// POST /generate endpoint: generate article using OpenAI streaming
+// POST /generate endpoint
 app.post('/generate', async (req, res) => {
   const { topic, language } = req.body;
 
-  // Validate input
   if (!topic || !language || !prompts[language]) {
     return res.status(400).send('Missing topic or invalid language.');
   }
@@ -131,7 +125,7 @@ app.post('/generate', async (req, res) => {
   const userPrompt = prompts[language](topic);
 
   try {
-    // Create streaming chat completion request using GPT-3.5-turbo
+    // Use GPT-3.5-turbo model (faster & cheaper)
     const stream = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [{ role: 'user', content: userPrompt }],
@@ -139,30 +133,28 @@ app.post('/generate', async (req, res) => {
       stream: true,
     });
 
-    // Set headers to indicate plain text streaming with UTF-8
     res.setHeader('Content-Type', 'text/plain; charset=utf-8');
 
-    // Stream the content chunk by chunk as it arrives
     for await (const part of stream) {
       const content = part.choices?.[0]?.delta?.content;
       if (content) res.write(content);
     }
-
     res.end();
 
   } catch (error) {
     console.error('OpenAI request failed:', error);
 
-    // Handle specific errors like quota exceeded or rate limits
     if (error.status === 429) {
+      // Rate limit or quota exceeded
       res.status(429).send("❌ OpenAI quota exceeded. Please check your plan.");
     } else {
+      // Other errors
       res.status(500).send("❌ An error occurred. Please try again later.");
     }
   }
 });
 
-// Start Express server
+// Start server
 app.listen(port, () => {
   console.log(`✅ SmartArticle AI server running at http://localhost:${port}`);
 });
